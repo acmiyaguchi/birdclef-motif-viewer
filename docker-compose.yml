@@ -31,4 +31,5 @@ services:
     depends_on:
       - static
     environment:
-      - STATIC_HOST=http://static:8000
+      - STATIC_INTERNAL_HOST=http://static:8000
+      - STATIC_EXTERNAL_HOST=http://localhost:8001

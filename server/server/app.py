@@ -1,12 +1,14 @@
+from collections import Counter
 from importlib import metadata
-
-from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
-from .config import Settings
-from pydantic import BaseModel
-import httpx
 from pathlib import Path
 from typing import List
+
+import httpx
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel
+
+from .config import Settings
 
 settings = Settings()
 app = FastAPI()
@@ -26,15 +28,19 @@ class Track(BaseModel):
     name: str
 
 
+class TrackCount(BaseModel):
+    species: str
+    count: int
+
+
 @app.get("/version")
 def version():
     return {"version": metadata.version(__package__)}
 
 
-@app.get("/api/v1/birdclef/listing")
-async def listing() -> List[Track]:
+async def get_listing(host: str) -> List[Track]:
     async with httpx.AsyncClient() as client:
-        resp = await client.get(f"{settings.static_host}/birdclef-2022-listing.json")
+        resp = await client.get(f"{host}/birdclef-2022-listing.json")
     data = resp.json()
 
     res = []
@@ -43,5 +49,32 @@ async def listing() -> List[Track]:
         if path.parts[0] != "train_audio":
             continue
         _, species, name = path.parts
-        res.append(Track(species=species, name=name))
+        res.append(Track(species=species, name=name.split(".")[0]))
     return res
+
+
+@app.get("/api/v1/birdclef")
+async def birdclef_listing() -> List[Track]:
+    return get_listing(settings.static_internal_host)
+
+
+@app.get("/api/v1/birdclef/species")
+async def birdclef_species() -> List[TrackCount]:
+    listing = await get_listing(settings.static_internal_host)
+    counter = Counter([x.species for x in listing])
+    return [TrackCount(species=x, count=y) for x, y in counter.items()]
+
+
+@app.get("/api/v1/birdclef/summary/{species}")
+async def birdclef_summary_listing(species: str) -> List[Track]:
+    listing = await get_listing(settings.static_internal_host)
+    return [item for item in listing if item.species == species]
+
+
+@app.get("/api/v1/birdclef/summary/{species}/{name}")
+async def birdclef_summary(species: str, name: str) -> List[Track]:
+    """Return summary information about the track."""
+    # TODO: the URL is hardcoded with information about the static srever
+    return {
+        "url": f"{settings.static_external_host}/birdclef-2022/train_audio/{species}/{name}.ogg"
+    }
