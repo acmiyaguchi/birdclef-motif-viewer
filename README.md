@@ -42,19 +42,23 @@ We use librosa and python-simple-fast to perform most of the audio processing an
 
 ```mermaid
 graph LR
-    subgraph localhost
-        nginx
-        client
-        server
-        subgraph disk
-            birdclef-2022
-        end
+    subgraph nginx
+        static
+        proxy
+    end
+    static --> proxy
+    app
+    api
+    subgraph disk
+        birdclef-2022
     end
 
-    birdclef-2022 --> nginx
-    nginx --> server
-    nginx --> client
-    server --> client
+    birdclef-2022 --> static
+    static --> api
+    proxy -->|api, static| app
+    api --> proxy
+    app --> proxy
+    proxy --> client
 ```
 
 #### cloud run
@@ -65,9 +69,13 @@ To deploy this service to the internet, we take some liberties with the way that
 graph LR
     subgraph google cloud run
         subgraph container
-            nginx
-            client
-            server
+            subgraph nginx
+                static
+                proxy
+            end
+            static --> proxy
+            app
+            api
         end
     end
 
@@ -75,10 +83,12 @@ graph LR
         birdclef-2022
     end
 
-    birdclef-2022 --> nginx
-    nginx --> server
-    nginx --> client
-    server --> client
+    birdclef-2022 --> static
+    static --> api
+    api --> proxy
+    proxy --> app
+    app --> proxy
+    proxy --> client
 ```
 
 - https://medium.com/google-cloud/cloud-run-multiple-processes-4b6f1b3827e
