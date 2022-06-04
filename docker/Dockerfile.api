@@ -3,9 +3,9 @@ FROM python:3.10
 WORKDIR /app
 RUN pip install poetry
 RUN poetry config virtualenvs.create false
-COPY ../server/poetry.lock ../server/pyproject.toml ./
+COPY ../api/poetry.lock ../api/pyproject.toml ./
 RUN poetry install --no-root
 
-COPY ../server ./
+COPY ../api ./
 RUN poetry install
-CMD uvicorn server.app:app --reload
+CMD uvicorn api.app:app --reload

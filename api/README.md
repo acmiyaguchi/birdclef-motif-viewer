@@ -5,5 +5,5 @@
 ```bash
 poetry install
 
-uvicorn server.app:app --reload
+uvicorn api.app:app --reload
 ```

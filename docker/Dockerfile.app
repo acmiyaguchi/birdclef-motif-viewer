@@ -1,8 +1,8 @@
 FROM node:18
 
 WORKDIR /app
-COPY ../client/package* ./
+COPY ../app/package* ./
 RUN npm install
 
-COPY ../client ./
+COPY ../app ./
 CMD npm run dev

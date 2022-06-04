@@ -1,12 +1,12 @@
 version: "3.8"
 
 services:
-  client:
+  app:
     build:
       context: .
-      dockerfile: docker/Dockerfile.client
+      dockerfile: docker/Dockerfile.app
     volumes:
-      - ./client/:/app
+      - ./app/:/app
       # Error: EACCES: permission denied, mkdir '/app/node_modules/.vite/processing'
       # NOTE: https://stackoverflow.com/q/67087735
       - /app/node_modules/
@@ -16,13 +16,13 @@ services:
       - VITE_HOST=http://localhost:4000
     ports:
       - "4001:4001"
-  server:
+  api:
     build:
       context: .
-      dockerfile: docker/Dockerfile.server
+      dockerfile: docker/Dockerfile.api
     volumes:
-      - ./server/:/app
-    command: python -m uvicorn server.app:app --reload --host 0.0.0.0 --port 4002
+      - ./api/:/app
+    command: python -m uvicorn api.app:app --reload --host 0.0.0.0 --port 4002
     environment:
       - STATIC_INTERNAL_HOST=http://nginx:4000
       - STATIC_EXTERNAL_HOST=http://localhost:4000
@@ -37,7 +37,7 @@ services:
     depends_on:
       # we're reverse proxying client and server, alongside serving static
       # content, so we need to ensure that these services are online
-      - client
-      - server
+      - app
+      - api
     ports:
       - "4000:4000"
