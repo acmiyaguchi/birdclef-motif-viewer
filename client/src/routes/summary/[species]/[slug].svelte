@@ -11,7 +11,9 @@
 
   $: browser &&
     species &&
-    fetch(`http://localhost:8000/api/v1/birdclef/summary/${species}/${slug}`)
+    fetch(
+      `${import.meta.env.VITE_HOST}/api/v1/birdclef/summary/${species}/${slug}`
+    )
       .then((res) => res.json())
       .then((data) => (summary = data));
 </script>

@@ -40,7 +40,7 @@ def version():
 
 async def get_listing(host: str) -> List[Track]:
     async with httpx.AsyncClient() as client:
-        resp = await client.get(f"{host}/birdclef-2022-listing.json")
+        resp = await client.get(f"{host}/static/birdclef-2022-listing.json")
     data = resp.json()
 
     res = []
@@ -53,28 +53,29 @@ async def get_listing(host: str) -> List[Track]:
     return res
 
 
-@app.get("/api/v1/birdclef")
+@app.get("/birdclef")
 async def birdclef_listing() -> List[Track]:
     return get_listing(settings.static_internal_host)
 
 
-@app.get("/api/v1/birdclef/species")
+@app.get("/birdclef/species")
 async def birdclef_species() -> List[TrackCount]:
     listing = await get_listing(settings.static_internal_host)
     counter = Counter([x.species for x in listing])
     return [TrackCount(species=x, count=y) for x, y in counter.items()]
 
 
-@app.get("/api/v1/birdclef/summary/{species}")
+@app.get("/birdclef/summary/{species}")
 async def birdclef_summary_listing(species: str) -> List[Track]:
     listing = await get_listing(settings.static_internal_host)
     return [item for item in listing if item.species == species]
 
 
-@app.get("/api/v1/birdclef/summary/{species}/{name}")
+@app.get("/birdclef/summary/{species}/{name}")
 async def birdclef_summary(species: str, name: str) -> List[Track]:
     """Return summary information about the track."""
     # TODO: the URL is hardcoded with information about the static srever
     return {
-        "url": f"{settings.static_external_host}/birdclef-2022/train_audio/{species}/{name}.ogg"
+        "url": f"{settings.static_external_host}/static"
+        + f"/birdclef-2022/train_audio/{species}/{name}.ogg"
     }

@@ -8,7 +8,7 @@
   let version: Version;
 
   $: browser &&
-    fetch("http://localhost:8000/version")
+    fetch(`${import.meta.env.VITE_HOST}/api/v1/version`)
       .then((res) => res.json())
       .then((data) => (version = data));
 </script>
