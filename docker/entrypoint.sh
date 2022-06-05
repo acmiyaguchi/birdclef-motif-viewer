@@ -11,8 +11,9 @@ python3 -m uvicorn api.app:app --host 0.0.0.0 --port 4002 &
 cd -
 
 # wait before we start nginx
-while nc -z localhost 4001; do sleep 0.1; done
-while nc -z localhost 4002; do sleep 0.1; done
+while ! wget -q -O - http://localhost:4001 > /dev/null; do sleep 0.1; done
+while ! wget -q -O - http://localhost:4002/version; do sleep 0.1; done
+echo ""
 
 cp /app/nginx/nginx-cloudrun.conf /etc/nginx/conf.d/default.conf
 nginx -g "daemon off;" &
