@@ -20,18 +20,20 @@ def plot_melspectogram(
     hop_length=80,
     n_mels=16,
     mp_window=80 * 5,
+    log_scaled=True,
 ) -> bytes:
     S = librosa.feature.melspectrogram(
         y=y, sr=sr, n_fft=n_fft, hop_length=hop_length, n_mels=n_mels
     )
-    S_dB = librosa.power_to_db(S, ref=np.max)
-    mp, _ = simple_fast(S_dB, S_dB, mp_window)
+    if log_scaled:
+        S = librosa.power_to_db(S, ref=np.max)
+    mp, _ = simple_fast(S, S, mp_window)
 
     fig, ax = plt.subplots(
         nrows=2, ncols=1, sharex=False, sharey=False, figsize=(7.5, 5)
     )
     librosa.display.specshow(
-        S_dB,
+        S,
         x_axis="time",
         y_axis="mel",
         sr=sr,

@@ -89,7 +89,17 @@ async def birdclef_summary(species: str, name: str) -> Summary:
 
 
 @app.get("/birdclef/melspectrogram/{species}/{name}")
-async def birdclef_melspectrogram(species: str, name: str, format="image"):
+async def birdclef_melspectrogram(
+    species: str,
+    name: str,
+    format="image",
+    sr: int = 32000,
+    n_fft=2048,
+    hop_length=200,
+    n_mels=16,
+    mp_window=200 * 5,
+    log_scaled=True,
+):
     """Return an image for plotting the melspectogram of a clip."""
     summary = await birdclef_summary(species, name)
     async with httpx.AsyncClient() as client:
@@ -99,8 +109,8 @@ async def birdclef_melspectrogram(species: str, name: str, format="image"):
             )
         )
     audio_bytes = resp.content
-    y, sr = load_audio_bytes(audio_bytes, sr=32000)
-    data = plot_melspectogram(y, sr)
+    y, sr = load_audio_bytes(audio_bytes, sr=sr)
+    data = plot_melspectogram(y, sr, n_fft, hop_length, n_mels, mp_window, log_scaled)
     if format == "base64":
         # convert data into json response, because the node frontend has a
         # difficult serving these responses

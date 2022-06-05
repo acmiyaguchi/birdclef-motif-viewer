@@ -15,9 +15,7 @@ services:
       - /app/.svelte-kit/
     command: |
       bash -c "
-        chmod -R 777 /app/{node_modules,.svelte-kit} \
-        && npm install \
-        && npm run dev
+        chmod -R 777 /app/{node_modules,.svelte-kit} && npm install && npm run dev
       "
     environment:
       - PORT=4001
