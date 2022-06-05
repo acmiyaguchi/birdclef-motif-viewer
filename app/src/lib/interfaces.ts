@@ -1,4 +1,5 @@
-interface Version {
+interface ServerStatus {
+  status: string;
   version: string;
 }
 
@@ -16,4 +17,4 @@ interface Summary {
   url: string;
 }
 
-export type { Version, TrackCount, Track, Summary };
+export type { ServerStatus, TrackCount, Track, Summary };

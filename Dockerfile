@@ -9,7 +9,7 @@ RUN apt-get -y update && \
     python3 \
     python3-pip \
     nginx \
-    netcat
+    git
 RUN wget https://deb.nodesource.com/setup_18.x && bash setup_18.x
 RUN apt-get -y update && apt-get -y install nodejs
 

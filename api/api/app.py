@@ -33,9 +33,9 @@ class TrackCount(BaseModel):
     count: int
 
 
-@app.get("/version")
-def version():
-    return {"version": metadata.version(__package__)}
+@app.get("/status")
+def status():
+    return {"status": "ok", "version": metadata.version(__package__)}
 
 
 async def get_listing(host: str) -> List[Track]:

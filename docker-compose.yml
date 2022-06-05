@@ -7,6 +7,7 @@ services:
       dockerfile: docker/Dockerfile.app
     volumes:
       - ./app/:/app
+      - ./.git:/app/.git
       # Error: EACCES: permission denied, mkdir '/app/node_modules/.vite/processing'
       # NOTE: https://stackoverflow.com/q/67087735
       - /app/node_modules/

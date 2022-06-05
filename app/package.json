@@ -1,6 +1,6 @@
 {
   "name": "app",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "scripts": {
     "dev": "svelte-kit dev --host --port 4001",
     "build": "svelte-kit build",
@@ -13,6 +13,7 @@
     "format": "prettier --write --plugin-search-dir=. ."
   },
   "devDependencies": {
+    "@rollup/plugin-replace": "^4.0.0",
     "@sveltejs/adapter-auto": "next",
     "@sveltejs/kit": "next",
     "prettier": "^2.6.2",

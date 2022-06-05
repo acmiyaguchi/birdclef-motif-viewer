@@ -7,4 +7,3 @@ package/
 .env.*
 !.env.example
 __pycache__/app
-.git/
