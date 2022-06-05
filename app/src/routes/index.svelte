@@ -1,17 +1,20 @@
-<script lang="ts">
-  import { browser } from "$app/env";
+<script context="module">
+  export async function load({ fetch }) {
+    const url = `/proxy/api/v1/birdclef/species`;
+    const response = await fetch(url);
 
-  interface TrackCount {
-    species: string;
-    count: number;
+    return {
+      status: response.status,
+      props: {
+        track_count: response.ok && (await response.json()),
+      },
+    };
   }
+</script>
 
-  let track_count: Array<TrackCount> = [];
-
-  $: browser &&
-    fetch(`${import.meta.env.VITE_HOST}/api/v1/birdclef/species`)
-      .then((res) => res.json())
-      .then((data) => (track_count = data));
+<script lang="ts">
+  import type { TrackCount } from "$lib/interfaces";
+  export let track_count: Array<TrackCount> = [];
 </script>
 
 <h1>birdclef-motif-viewer</h1>

@@ -1,21 +1,25 @@
-<script lang="ts">
-  import { browser } from "$app/env";
-  import { page } from "$app/stores";
+<script context="module">
+  export async function load({ params, fetch }) {
+    const { species, slug } = params;
+    const url = `/proxy/api/v1/birdclef/summary/${species}/${slug}`;
+    const response = await fetch(url);
 
-  interface Summary {
-    url: string;
+    return {
+      status: response.status,
+      props: {
+        species: species,
+        slug: slug,
+        summary: response.ok && (await response.json()),
+      },
+    };
   }
+</script>
 
-  let summary: Summary;
-  let { species, slug } = $page.params;
-
-  $: browser &&
-    species &&
-    fetch(
-      `${import.meta.env.VITE_HOST}/api/v1/birdclef/summary/${species}/${slug}`
-    )
-      .then((res) => res.json())
-      .then((data) => (summary = data));
+<script lang="ts">
+  import type { Summary } from "$lib/interfaces";
+  export let species: String;
+  export let slug: String;
+  export let summary: Summary;
 </script>
 
 <h1>{species} - {slug}</h1>

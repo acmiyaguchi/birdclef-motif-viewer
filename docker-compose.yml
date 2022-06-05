@@ -12,10 +12,16 @@ services:
       - /app/node_modules/
       - /app/build/
       - /app/.svelte-kit/
-    command: bash -c "chmod -R 777 /app/node_modules && npm install && npm run dev"
+    command: |
+      bash -c "
+        chmod -R 777 /app/node_modules \
+        && chmod -R 777 /app/.svelte-kit \
+        && npm install \
+        && npm run dev
+      "
     environment:
       - PORT=4001
-      - VITE_HOST=http://localhost:4000
+      - VITE_HOST=http://nginx:4000
     ports:
       - "4001:4001"
   api:
