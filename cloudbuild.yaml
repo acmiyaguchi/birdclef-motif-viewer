@@ -10,6 +10,8 @@ steps:
         "gcr.io/$PROJECT_ID/$REPO_NAME:latest",
         "--cache-from",
         "gcr.io/$PROJECT_ID/$REPO_NAME:latest",
+        "-f",
+        "docker/Dockerfile.cloudrun",
         ".",
       ]
   - name: "gcr.io/cloud-builders/docker"
