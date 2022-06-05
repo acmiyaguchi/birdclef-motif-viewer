@@ -72,6 +72,11 @@ resource "google_cloud_run_service" "default" {
     spec {
       containers {
         image = "gcr.io/${local.project_id}/${local.repo_name}"
+        env {
+            # NOTE: circular dependencies, so this is a chicken and egg problem
+            name = "STATIC_EXTERNAL_HOST"
+            value = "https://birdclef-motif-viewer-bx4w66axbq-uc.a.run.app"
+        }
       }
     }
   }
