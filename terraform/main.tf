@@ -65,17 +65,19 @@ resource "google_cloudbuild_trigger" "deploy-cloud-run" {
 resource "google_cloud_run_service" "default" {
   depends_on = [google_project_service.run]
 
-  name     = local.repo_name
-  location = local.region
+  name                       = local.repo_name
+  location                   = local.region
+  autogenerate_revision_name = true
 
   template {
     spec {
+      container_concurrency = 4
       containers {
-        image = "gcr.io/${local.project_id}/${local.repo_name}"
+        image = "gcr.io/${local.project_id}/${local.repo_name}:latest"
         env {
-            # NOTE: circular dependencies, so this is a chicken and egg problem
-            name = "STATIC_EXTERNAL_HOST"
-            value = "https://birdclef-motif-viewer-bx4w66axbq-uc.a.run.app"
+          # NOTE: circular dependencies, so this is a chicken and egg problem
+          name  = "STATIC_EXTERNAL_HOST"
+          value = "https://birdclef-motif-viewer-bx4w66axbq-uc.a.run.app"
         }
       }
     }
