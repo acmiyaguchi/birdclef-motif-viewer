@@ -1,11 +1,7 @@
 // ensure that all calls are made through the server, since the backend host is
 // on localhost, which is not available to the browser client
-export async function get({ params }) {
+export async function get({ params, url }) {
   const { prefix } = params;
-  const url = `${import.meta.env.VITE_HOST}/${prefix}`;
-  const response = await fetch(url);
-  return {
-    status: response.status,
-    body: response.ok && (await response.json()),
-  };
+  const query = new URLSearchParams(url.searchParams);
+  return await fetch(`${import.meta.env.VITE_HOST}/${prefix}?${query}`);
 }

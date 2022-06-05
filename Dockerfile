@@ -9,7 +9,8 @@ RUN apt-get -y update && \
     python3 \
     python3-pip \
     nginx \
-    git
+    git \
+    libsndfile1
 RUN wget https://deb.nodesource.com/setup_18.x && bash setup_18.x
 RUN apt-get -y update && apt-get -y install nodejs
 

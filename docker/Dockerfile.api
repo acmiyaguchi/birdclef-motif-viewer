@@ -1,7 +1,8 @@
 FROM python:3.10
 
 WORKDIR /app
-RUN pip install poetry
+RUN apt-get -y update && apt-get -y install libsndfile1-dev
+RUN pip install poetry wheel
 RUN poetry config virtualenvs.create false
 COPY ../api/poetry.lock ../api/pyproject.toml ./
 RUN poetry install --no-root
