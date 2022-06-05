@@ -99,3 +99,5 @@ graph LR
 ```
 
 - https://medium.com/google-cloud/cloud-run-multiple-processes-4b6f1b3827e
+
+Configuration for cloud-build and cloud-run comes is adapted from previous work in [acmiyaguchi/prolog-pokedex](https://github.com/acmiyaguchi/prolog-pokedex).
