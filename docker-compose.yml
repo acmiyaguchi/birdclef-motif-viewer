@@ -15,8 +15,7 @@ services:
       - /app/.svelte-kit/
     command: |
       bash -c "
-        chmod -R 777 /app/node_modules \
-        && chmod -R 777 /app/.svelte-kit \
+        chmod -R 777 /app/{node_modules,.svelte-kit} \
         && npm install \
         && npm run dev
       "
