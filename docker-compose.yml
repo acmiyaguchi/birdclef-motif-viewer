@@ -10,6 +10,8 @@ services:
       # Error: EACCES: permission denied, mkdir '/app/node_modules/.vite/processing'
       # NOTE: https://stackoverflow.com/q/67087735
       - /app/node_modules/
+      - /app/build/
+      - /app/.svelte-kit/
     command: bash -c "chmod -R 777 /app/node_modules && npm install && npm run dev"
     environment:
       - PORT=4001

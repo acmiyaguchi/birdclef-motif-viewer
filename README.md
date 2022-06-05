@@ -13,6 +13,13 @@ docker compose build
 docker compose up
 ```
 
+You may also want to test the standalone container, which is optimized for deployment on Google Cloud Run.
+
+```bash
+docker compose -f docker-compose-cloudrun.yaml build
+docker-compose -f docker-compose-cloudrun.yaml up
+```
+
 ## notes
 
 ```bash
