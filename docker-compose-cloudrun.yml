@@ -5,7 +5,6 @@ services:
   app:
     build:
       context: .
-      dockerfile: docker/Dockerfile.cloudrun
     environment:
       # TODO: this needs to be configured in cloudrun
       - STATIC_EXTERNAL_HOST=http://localhost:8080

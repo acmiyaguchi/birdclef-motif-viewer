@@ -1,3 +1,5 @@
+# Dockerfile for cloudrun. We move this file to the top-level, because
+# cloudbuild has issues with obtaining the correct build context.
 FROM ubuntu:22.04
 
 WORKDIR /tmp
@@ -14,12 +16,12 @@ RUN apt-get -y update && apt-get -y install nodejs
 WORKDIR /app/api
 RUN pip install poetry
 RUN poetry config virtualenvs.create false
-COPY ../api/poetry.lock ../api/pyproject.toml ./
+COPY ./api/poetry.lock ./api/pyproject.toml ./
 RUN poetry install
 
 # install the app dependences
 WORKDIR /app/app
-COPY ../app/package* ./
+COPY ./app/package* ./
 RUN npm install
 
 # ensure variables are available at build time
@@ -28,7 +30,7 @@ ENV STATIC_EXTERNAL_HOST=http://localhost:8080
 ENV VITE_HOST=http://localhost:8080
 
 WORKDIR /app
-COPY ../ /app/
+COPY ./ /app/
 
 WORKDIR /app/api
 RUN poetry install
