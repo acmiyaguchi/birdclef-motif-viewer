@@ -18,6 +18,7 @@
 <script lang="ts">
   import type { Summary } from "$lib/interfaces";
   import { browser } from "$app/env";
+  import WaveSurfer from "$lib/WaveSurfer.svelte";
 
   export let species: String;
   export let slug: String;
@@ -35,8 +36,10 @@
 <h1>{species} - {slug}</h1>
 
 {#if summary}
-  <div><audio controls><source src={summary.url} /></audio></div>
+  <WaveSurfer audioUrl={summary.url} />
 {/if}
+
+<h2>melspectogram and simple</h2>
 
 {#if melspectrogram}
   <img src={melspectrogram.data} alt="melspectrogram" />
