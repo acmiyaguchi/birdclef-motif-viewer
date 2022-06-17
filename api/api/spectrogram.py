@@ -16,14 +16,18 @@ def load_audio_bytes(data: bytes, sr: int = None) -> Tuple[np.ndarray, int]:
 def plot_melspectogram(
     y: np.ndarray,
     sr: int = 32000,
-    n_fft=2048,
-    hop_length=80,
-    n_mels=16,
-    mp_window=80 * 5,
+    n_fft: int = 2048,
+    hop_length: int = 80,
+    n_mels: int = 16,
+    mp_window: int = 80 * 5,
     log_scaled=True,
+    offset: float = 0,
+    length: float = -1,
 ) -> bytes:
+    start = int(offset * sr)
+    end = -1 if length < 0 else start + int(length * sr)
     S = librosa.feature.melspectrogram(
-        y=y, sr=sr, n_fft=n_fft, hop_length=hop_length, n_mels=n_mels
+        y=y[start:end], sr=sr, n_fft=n_fft, hop_length=hop_length, n_mels=n_mels
     )
     if log_scaled:
         S = librosa.power_to_db(S, ref=np.max)

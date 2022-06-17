@@ -94,11 +94,13 @@ async def birdclef_melspectrogram(
     name: str,
     format="image",
     sr: int = 32000,
-    n_fft=2048,
-    hop_length=200,
-    n_mels=16,
-    mp_window=200 * 5,
+    n_fft: int = 2048,
+    hop_length: int = 200,
+    n_mels: int = 16,
+    mp_window: int = 200 * 5,
     log_scaled=True,
+    offset: float = 0,
+    length: float = -1,
 ):
     """Return an image for plotting the melspectogram of a clip."""
     summary = await birdclef_summary(species, name)
@@ -110,7 +112,9 @@ async def birdclef_melspectrogram(
         )
     audio_bytes = resp.content
     y, sr = load_audio_bytes(audio_bytes, sr=sr)
-    data = plot_melspectogram(y, sr, n_fft, hop_length, n_mels, mp_window, log_scaled)
+    data = plot_melspectogram(
+        y, sr, n_fft, hop_length, n_mels, mp_window, log_scaled, offset, length
+    )
     if format == "base64":
         # convert data into json response, because the node frontend has a
         # difficult serving these responses
