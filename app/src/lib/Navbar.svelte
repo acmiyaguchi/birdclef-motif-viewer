@@ -21,7 +21,7 @@
     <div>
       <b>git rev</b>:
       <a
-        href="https://github.com/acmiyaguchi/birdclef-2022/commit/{client_status.git_sha}"
+        href="https://github.com/acmiyaguchi/birdclef-motif-viewer/commit/{client_status.git_sha}"
         >{client_status.git_sha}</a
       >
       <b>app</b>: v{client_status.version}
