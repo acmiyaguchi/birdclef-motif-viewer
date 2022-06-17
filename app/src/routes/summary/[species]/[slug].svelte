@@ -17,6 +17,7 @@
 
 <script lang="ts">
   import type { Summary } from "$lib/interfaces";
+  import { beforeNavigate } from "$app/navigation";
   import { browser } from "$app/env";
   import WaveSurfer from "$lib/WaveSurfer.svelte";
 
@@ -24,13 +25,21 @@
   export let slug: String;
   export let summary: Summary;
 
+  // make our request cancellable
+  const controller = new AbortController();
+
   let melspectrogram: any;
   $: browser &&
     fetch(
-      `/proxy/api/v1/birdclef/melspectrogram/${species}/${slug}?format=base64`
+      `/proxy/api/v1/birdclef/melspectrogram/${species}/${slug}?format=base64`,
+      { signal: controller.signal }
     )
       .then((resp) => resp.json())
       .then((data) => (melspectrogram = data));
+
+  beforeNavigate(() => {
+    controller.abort();
+  });
 </script>
 
 <h1>{species} - {slug}</h1>

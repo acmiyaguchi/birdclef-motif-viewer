@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { ClientStatus, ServerStatus } from "$lib/interfaces";
+  import type { ClientStatus, ServerStatus } from "$lib/interfaces";
   export let path: Array<string> = [];
   export let client_status: ClientStatus;
   export let server_status: ServerStatus;
