@@ -10,9 +10,11 @@
     <a href="/">home</a>
     <span class="sep">|</span>
     <a href="/summary">summary</a>
-    {#each path.filter((p) => p != "summary") as part, i}
-      <span class="sep">/</span>
-      <a href={"/" + path.slice(0, i + 1).join("/")}>{part}</a>
+    {#each path as part, i}
+      {#if part != "summary"}
+        <span class="sep">/</span>
+        <a href={"/" + path.slice(0, i + 1).join("/")}>{part}</a>
+      {/if}
     {/each}
   </div>
   <div>
