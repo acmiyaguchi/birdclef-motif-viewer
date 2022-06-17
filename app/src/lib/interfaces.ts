@@ -1,3 +1,11 @@
+interface ClientStatus {
+  status: string;
+  mode: string;
+  version: string;
+  git_sha: string;
+  build_time: string;
+}
+
 interface ServerStatus {
   status: string;
   version: string;
@@ -17,4 +25,4 @@ interface Summary {
   url: string;
 }
 
-export type { ServerStatus, TrackCount, Track, Summary };
+export type { ClientStatus, ServerStatus, TrackCount, Track, Summary };
