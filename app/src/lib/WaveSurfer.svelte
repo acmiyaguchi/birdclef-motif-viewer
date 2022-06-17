@@ -43,6 +43,9 @@
     wavesurfer.on("audioprocess", () => {
       currentTime = wavesurfer.getCurrentTime().toFixed(2);
     });
+    wavesurfer.on("finish", () => {
+      isPlaying = false;
+    });
   });
 
   onDestroy(() => {
